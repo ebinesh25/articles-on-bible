@@ -45,6 +45,10 @@ function App() {
 
   const pages: Page[] = contentData.pages;
 
+  const getFontClass = () => {
+    return language === 'tamil' ? 'font-catamaran' : 'font-inter';
+  };
+
   const getThemeColors = (theme: string) => {
     switch (theme) {
       case 'gray':
@@ -87,7 +91,7 @@ function App() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
               <Book className="h-8 w-8 text-amber-700" />
-              <span className="font-serif text-xl font-semibold text-gray-800">
+              <span className={`text-xl font-semibold text-gray-800 ${getFontClass()}`}>
                 {language === 'tamil' ? 'ஜெஸ்ஸி ஆனந்த்' : 'Jessie Anand'}
               </span>
             </div>
@@ -120,7 +124,7 @@ function App() {
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-rose-200 to-pink-200"></div>
             </div>
 
-            <h1 className="font-serif text-5xl md:text-7xl font-light text-gray-800 mb-6 tracking-wide">
+            <h1 className={`text-5xl md:text-7xl font-light text-gray-800 mb-6 tracking-wide ${getFontClass()}`}>
               {language === 'tamil' ? (
                 <>
                   ஊக்கமளிக்கும்
@@ -134,7 +138,7 @@ function App() {
               )}
             </h1>
             
-            <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+            <p className={`text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed ${getFontClass()}`}>
               {language === 'tamil' 
                 ? 'நம்பிக்கை, நம்பிக்கை மற்றும் தெய்வீக அன்பின் மூலம் பயணம் செய்யுங்கள், இதயத்தில் பேசும் மற்றும் ஆன்மாவை வளர்க்கும் சிந்தனைமிக்க பிரதிபலிப்புகளுடன்.'
                 : 'Journey through faith, hope, and divine love with thoughtful reflections that speak to the heart and nurture the soul.'
@@ -151,10 +155,10 @@ function App() {
                   <div className="flex items-center justify-center mb-4">
                     <Heart className="h-8 w-8 text-amber-600 group-hover:scale-110 transition-transform duration-200" />
                   </div>
-                  <h3 className="font-serif text-xl font-semibold text-gray-800 mb-3">
+                  <h3 className={`text-xl font-semibold text-gray-800 mb-3 ${getFontClass()}`}>
                     {page.title[language]}
                   </h3>
-                  <p className="text-gray-600 text-sm line-clamp-3">
+                  <p className={`text-gray-600 text-sm line-clamp-3 ${getFontClass()}`}>
                     {page.content[language].mainText.substring(0, 120)}...
                   </p>
                 </div>
@@ -172,10 +176,10 @@ function App() {
                     <div className="flex items-center justify-center mb-4">
                       <Star className="h-8 w-8 text-amber-600 group-hover:scale-110 transition-transform duration-200" />
                     </div>
-                    <h3 className="font-serif text-xl font-semibold text-gray-800 mb-3">
+                    <h3 className={`text-xl font-semibold text-gray-800 mb-3 ${getFontClass()}`}>
                       {page.title[language]}
                     </h3>
-                    <p className="text-gray-600 text-sm line-clamp-3">
+                    <p className={`text-gray-600 text-sm line-clamp-3 ${getFontClass()}`}>
                       {page.content[language].mainText.substring(0, 120)}...
                     </p>
                   </div>
@@ -199,7 +203,7 @@ function App() {
               className="flex items-center space-x-2 text-gray-700 hover:text-amber-700 transition-colors duration-200"
             >
               <Book className="h-6 w-6" />
-              <span className="font-serif text-lg font-semibold">
+              <span className={`text-lg font-semibold ${getFontClass()}`}>
                 {language === 'tamil' ? 'ஜெஸ்ஸி ஆனந்த்' : 'Jessie Anand'}
               </span>
             </button>
@@ -209,7 +213,7 @@ function App() {
               className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 transition-colors duration-200"
             >
               <Globe className="h-4 w-4" />
-              <span className="font-medium">
+              <span className={`font-medium ${getFontClass()}`}>
                 {language === 'tamil' ? 'English' : 'தமிழ்'}
               </span>
             </button>
@@ -223,7 +227,7 @@ function App() {
           <div className="p-8 md:p-12">
             {/* Title */}
             <div className="text-center mb-12">
-              <h1 className="font-serif text-4xl md:text-6xl font-light mb-6 tracking-wide">
+              <h1 className={`text-4xl md:text-6xl font-light mb-6 tracking-wide ${getFontClass()}`}>
                 {page.title[language]}
               </h1>
               <div className={`w-24 h-1 mx-auto rounded-full bg-gradient-to-r ${
@@ -237,73 +241,73 @@ function App() {
 
             {/* Main Content */}
             <div className="prose prose-lg max-w-none">
-              <p className="text-gray-700 leading-relaxed mb-8 text-justify">
+              <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
                 {page.content[language].mainText}
               </p>
 
               {page.content[language].habitDefinition && (
-                <p className="text-gray-700 leading-relaxed mb-8 text-justify">
+                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
                   {page.content[language].habitDefinition}
                 </p>
               )}
 
               {page.content[language].scripture && (
                 <div className={`border-l-4 ${getAccentColor(page.theme)} pl-6 my-8`}>
-                  <blockquote className="font-serif text-xl italic text-gray-800 mb-2">
+                  <blockquote className={`text-xl italic text-gray-800 mb-2 ${getFontClass()}`}>
                     "{page.content[language].scripture}"
                   </blockquote>
                 </div>
               )}
 
               {page.content[language].scriptureReflection && (
-                <p className="text-gray-700 leading-relaxed mb-8 text-justify">
+                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
                   {page.content[language].scriptureReflection}
                 </p>
               )}
 
               {page.content[language].promise && (
-                <p className="text-gray-700 leading-relaxed mb-8 text-justify font-medium">
+                <p className={`text-gray-700 leading-relaxed mb-8 text-justify font-medium ${getFontClass()}`}>
                   {page.content[language].promise}
                 </p>
               )}
 
               {page.content[language].encouragement && (
-                <p className="text-gray-700 leading-relaxed mb-8 text-justify">
+                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
                   {page.content[language].encouragement}
                 </p>
               )}
 
               {page.content[language].consistency && (
-                <p className="text-gray-700 leading-relaxed mb-8 text-justify">
+                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
                   {page.content[language].consistency}
                 </p>
               )}
 
               {page.content[language].importance && (
-                <p className="text-gray-700 leading-relaxed mb-8 text-justify">
+                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
                   {page.content[language].importance}
                 </p>
               )}
 
               {page.content[language].comfort && (
-                <p className="text-gray-700 leading-relaxed mb-8 text-justify">
+                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
                   {page.content[language].comfort}
                 </p>
               )}
 
               {page.content[language].loveDescription && (
-                <p className="text-gray-700 leading-relaxed mb-8 text-justify">
+                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
                   {page.content[language].loveDescription}
                 </p>
               )}
 
               {/* Reflection */}
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-8 mt-12">
-                <h3 className="font-serif text-2xl font-semibold text-amber-800 mb-4 flex items-center">
+                <h3 className={`text-2xl font-semibold text-amber-800 mb-4 flex items-center ${getFontClass()}`}>
                   <Heart className="h-6 w-6 mr-2" />
                   {language === 'tamil' ? 'சிந்தனை' : 'Reflection'}
                 </h3>
-                <p className="text-amber-900 leading-relaxed italic">
+                <p className={`text-amber-900 leading-relaxed italic ${getFontClass()}`}>
                   {page.content[language].reflection}
                 </p>
               </div>
@@ -311,7 +315,7 @@ function App() {
 
             {/* Author */}
             <div className="text-center mt-12 pt-8 border-t border-gray-200">
-              <p className="font-serif text-lg text-gray-600">
+              <p className={`text-lg text-gray-600 ${getFontClass()}`}>
                 — {contentData.author[language]}
               </p>
             </div>
