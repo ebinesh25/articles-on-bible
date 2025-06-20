@@ -101,7 +101,7 @@
     {
       "id": "available",
       "title": {
-        "tamil": "கிடைக்கக்கூடியது",
+        "tamil": "கிடைக்கும்",
         "english": "AVAILABLE"
       },
       "theme": "light",
@@ -120,28 +120,7 @@
         }
       }
     },
-    {
-      "id": "available-all",
-      "title": {
-        "tamil": "கிடைக்கக்கூடியது yellams",
-        "english": "AVAILABLE ALL"
-      },
-      "theme": "light",
-      "content": {
-        "tamil": {
-          "mainText": "எல்லோரும் ஏங்கும் ஒரு விஷயம் மற்றும் ஒருபோதும் போதும் என்று சொல்லாத ஒன்று 'அன்பு'. அன்பு ஒரு உணர்ச்சி அல்ல, மாறாக மனித அனுபவத்தின் அடிப்படை அம்சம். பெற்றோர், கூட்டாளிகள், நண்பர்கள், உடன்பிறப்பு குழந்தைகள் மற்றும் செல்லப்பிராணிகளிடமிருந்து கூட அன்பையும் பாசத்தையும் பெறுவது நம் நம்பிக்கையை அதிகரிக்கவும் மதிப்புமிக்கவர்களாக உணரவும் செய்யும். நான் அன்புக்காக ஏங்கும் ஒரு நபர்; என் பெற்றோர், கணவர், சகோதரர் மற்றும் மக்கள் இருந்தாலும், சில நேரங்களில் யாரும் என்னை நேசிக்கவில்லை என்று உணர்கிறேன்.",
-          "scripture": "எபேசியர் 3:18 'கிறிஸ்துவின் அன்பு எவ்வளவு அகலமானது, நீளமானது, உயரமானது மற்றும் ஆழமானது' என்பதைப் பற்றி பேசுகிறது.",
-          "loveDescription": "நீங்கள் அன்புக்காக ஏங்குகிறீர்களா? இது உங்களுக்காக. அவரது அன்பு நம் புரிதலுக்கு அப்பாற்பட்டது, எல்லையற்றது மற்றும் அளவிட முடியாதது. அதை எளிதாக்க, ஒரு கணம், உங்கள் மனதில் கடலை படம் பிடியுங்கள். அதன் ஆரம்பத்தைப் பார்க்க முடியுமா? அதன் முடிவைப் பார்க்க முடியாது, அதன் ஆழம், அகலம் மற்றும் உயரத்தை அளவிட முடியாது, இல்லையா? அவ்வளவு கடவுளின் அன்பு பெரியது. இது இலவசம் மற்றும் அனைவருக்கும் கிடைக்கக்கூடியது.",
-          "reflection": "1. ஒரு கணம் எடுத்துக்கொண்டு, இந்த வேதாகமத்தை படித்தபோது நீங்கள் எப்படி உணர்ந்தீர்கள் என்பதை உங்கள் ஜெப நேரத்தில் கடவுளிடம் பகிர்ந்து கொள்ளுங்கள். இன்று இந்த அன்பைப் பற்றி நீங்கள் எப்படி உணர்ந்தீர்கள் என்பதை யாரிடமாவது பகிர்ந்து கொள்ளுங்கள்."
-        },
-        "english": {
-          "mainText": "One thing that everybody longs for and never says is enough means it is 'love'. Love is not an emotion but a fundamental aspect of the human experience. Receiving love and affection from parents, partners, friends, sibling children and even pets can boost our confidence and make us feel valued. I'm a person longing for love; even though my parents, husband, brother & people are there, sometimes I feel no one loves me. Sometimes they show it, but my inner self is not satisfied. I feel they did not meet up the way I showed and accepted... When individuals don't receive the love they desire, it can lead to feelings of sadness and disappointment, & it can trigger negative emotions and psychological distress. The unmet need for love can lead to feelings of loneliness, low self-esteem, and a sense of worthlessness. Everyone might have many incidents in our lives where we feel unloved when the loved one hurts us, and some might take advantage of our love. Love controls us, and it can push us into any extreme; it can be positive and negative too. I searched in all places from my childhood till now, even after marrying a loved one, having a beautiful baby, and having everything I wanted, but sometimes still my heart was not satisfied. After delivery, many might know women might go through postpartum depression. It takes you to another extreme & many phases of yourself... I was going through loneliness and feeling unloved at that time. I'm encouraging myself and starting to connect with the truth of the emptiness, the void within me that cannot be filled by material possessions, relationships, or worldly achievements – not now, forever, and it can't. Only I can get satisfied by getting closer with God. Why? Because he only created us with a need that he alone can fill! The human soul often experiences a deep longing or emptiness that worldly things cannot permanently satisfy. God is the only source of true and lasting satisfaction for the soul. Even after knowing the truth, getting connected with God itself is difficult for me during my post-delivery period and even now. But I pushed myself, my husband and many sisters helped and encouraged me to get connected with God because he alone can satisfy me. This scripture is always very close to my heart; this is true.",
-          "scripture": "Ephesians 3:18 speaks of \"how wide and long and high and deep is the love of Christ\".",
-          "loveDescription": "Are you longing for love? This is for you. His love is beyond our understanding, boundless and immeasurable. To make it easy, just for a moment, picture the sea in your mind. Can you see its beginning? You can't see its end, and you can't measure the depth, width & height of it, right? That much God's love is big. It's free and available for everyone. Nothing we can do or fail to do will stop him from loving us. He loves us more than anyone could in a lifetime. God's love is the only thing that can fully satisfy the hungry heart of us .So let's explore this love and stay close to him daily and forever.",
-          "reflection": "1. Take a moment & share how you felt when you read this scripture to God in your prayer time. And share with someone how you felt about this love today."
-        }
-      }
-    }
+    
   ],
   "author": {
     "tamil": "ஜெஸ்ஸி ஆனந்த்",
