@@ -176,3 +176,39 @@ const page = pages.find(p => p.id === id);
 ```
 
 This routing implementation provides a solid foundation for the Bible articles application with proper URL structure, SEO optimization, and user-friendly navigation.
+
+## Deployment Configuration
+
+### Netlify Deployment
+For deployment on Netlify, the project includes both `_redirects` and `netlify.toml` files to handle client-side routing:
+
+#### _redirects file
+```
+/* /index.html 200
+```
+
+#### netlify.toml file
+```toml
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
+These files ensure that:
+- Direct URL access to routes like `/article/weakness?la=english` works correctly
+- Browser refresh on any route doesn't result in 404 errors
+- All routes are handled by React Router instead of the server
+
+### Build and Deploy
+```bash
+# Build the project
+npm run build
+
+# The dist/ folder will contain:
+# - index.html (main app)
+# - _redirects (Netlify routing config)
+# - assets/ (CSS, JS files)
+```
+
+Deploy the `dist/` folder to Netlify, and all routes will work correctly with the redirect configuration.
