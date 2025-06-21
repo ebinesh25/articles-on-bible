@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { Page, Language } from '../types';
+import { Page, DynamicPage, Language } from '../types';
 
 interface SEOMetaProps {
   title?: string;
   description?: string;
-  page?: Page;
+  page?: Page | DynamicPage;
   language: Language;
 }
 
@@ -13,7 +13,16 @@ export const useDocumentTitle = ({ title, description, page, language }: SEOMeta
     if (page) {
       // For article pages
       const pageTitle = page.title[language];
-      const pageDescription = page.content[language].mainText.substring(0, 160);
+      // Extract mainText safely: support both object and array formats
+      const rawContent = (page.content as any)[language];
+      let mainText: string = '';
+      if (Array.isArray(rawContent)) {
+        const m = rawContent.find((e: any) => e.type === 'reflection');
+        mainText = m ? String(m.value) : '';
+      } else if (rawContent && typeof rawContent === 'object') {
+        mainText = String(rawContent.reflection || '');
+      }
+      const pageDescription = mainText.substring(0, 160);
       document.title = `${pageTitle} | ${language === 'tamil' ? 'ஜெஸ்ஸி ஆனந்த்' : 'Jessie Anand'}`;
       
       // Update meta description

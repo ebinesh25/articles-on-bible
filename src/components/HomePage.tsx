@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Book, Heart, Star, Sparkles, Globe } from 'lucide-react';
 import contentData from '../data/content.json';
 import { Language } from '../types';

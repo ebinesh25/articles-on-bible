@@ -35,8 +35,35 @@ export interface Page {
   };
 }
 
+// New dynamic content structure
+export interface ContentEntry {
+  type: string;
+  value: string;
+}
+
+export interface DynamicPage {
+  id: string;
+  title: {
+    tamil: string;
+    english: string;
+  };
+  theme: string;
+  content: {
+    tamil: ContentEntry[];
+    english: ContentEntry[];
+  };
+}
+
 export interface ContentData {
   pages: Page[];
+  author: {
+    tamil: string;
+    english: string;
+  };
+}
+
+export interface DynamicContentData {
+  pages: DynamicPage[];
   author: {
     tamil: string;
     english: string;
