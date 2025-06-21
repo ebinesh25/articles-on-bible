@@ -5,6 +5,7 @@ import contentData from '../data/content.json';
 import { Page, Language } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';
+import MarkdownRenderer from './MarkdownRenderer';
 
 interface ArticlePageProps {
   language: Language;
@@ -169,14 +170,16 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ language, setLanguage }) => {
 
             {/* Main Content */}
             <div className="prose prose-lg max-w-none">
-              <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
-                {page.content[language].mainText}
-              </p>
+              <MarkdownRenderer
+                text={page.content[language].mainText}
+                className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}
+              />
 
               {page.content[language].habitDefinition && (
-                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
-                  {page.content[language].habitDefinition}
-                </p>
+                <MarkdownRenderer
+                  text={page.content[language].habitDefinition}
+                  className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}
+                />
               )}
 
               {page.content[language].scripture && (
@@ -188,45 +191,52 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ language, setLanguage }) => {
               )}
 
               {page.content[language].scriptureReflection && (
-                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
-                  {page.content[language].scriptureReflection}
-                </p>
+                <MarkdownRenderer
+                  text={page.content[language].scriptureReflection}
+                  className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}
+                />
               )}
 
               {page.content[language].promise && (
-                <p className={`text-gray-700 leading-relaxed mb-8 text-justify font-medium ${getFontClass()}`}>
-                  {page.content[language].promise}
-                </p>
+                <MarkdownRenderer
+                  text={page.content[language].promise}
+                  className={`text-gray-700 leading-relaxed mb-8 text-justify font-medium ${getFontClass()}`}
+                />
               )}
 
               {page.content[language].encouragement && (
-                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
-                  {page.content[language].encouragement}
-                </p>
+                <MarkdownRenderer
+                  text={page.content[language].encouragement}
+                  className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}
+                />
               )}
 
               {page.content[language].consistency && (
-                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
-                  {page.content[language].consistency}
-                </p>
+                <MarkdownRenderer
+                  text={page.content[language].consistency}
+                  className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}
+                />
               )}
 
               {page.content[language].importance && (
-                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
-                  {page.content[language].importance}
-                </p>
+                <MarkdownRenderer
+                  text={page.content[language].importance}
+                  className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}
+                />
               )}
 
               {page.content[language].comfort && (
-                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
-                  {page.content[language].comfort}
-                </p>
+                <MarkdownRenderer
+                  text={page.content[language].comfort}
+                  className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}
+                />
               )}
 
               {page.content[language].loveDescription && (
-                <p className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}>
-                  {page.content[language].loveDescription}
-                </p>
+                <MarkdownRenderer
+                  text={page.content[language].loveDescription}
+                  className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}
+                />
               )}
 
               {/* Reflection */}
@@ -236,9 +246,10 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ language, setLanguage }) => {
                   <Heart className="h-6 w-6 mr-2" />
                   {language === 'tamil' ? 'சிந்தனை' : 'Reflection'}
                 </h3>
-                <p className={`text-amber-900 leading-relaxed italic ${getFontClass()}`}>
-                  {page.content[language].reflection}
-                </p>
+                <MarkdownRenderer
+                  text={page.content[language].reflection}
+                  className={`text-amber-900 leading-relaxed italic ${getFontClass()}`}
+                />
               </div>)}
             </div>
 
