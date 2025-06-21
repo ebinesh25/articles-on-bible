@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Book, Globe, Heart } from 'lucide-react';
-import contentData from '../data/content.new.json';
+import contentData from '../data/content.json';
 import { Language, DynamicContentData, ContentEntry } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';

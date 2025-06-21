@@ -13,7 +13,7 @@ This application now uses React Router for dynamic routing, allowing each articl
 
 ### Article Pages
 - **URL**: `/article/:id`
-- **Component**: `ArticlePage`
+- **Component**: `DynamicComponentArticlePage`
 - **Description**: Individual article pages where `:id` corresponds to the article ID from content.json
 - **Language Support**: Add `?la=english` or `?la=tamil` to set language
 - **Examples**:
@@ -91,9 +91,9 @@ Based on the current content.json, the following article routes are available:
 ```
 src/
 ├── components/
-│   ├── HomePage.tsx       # Home page with article grid
-│   ├── ArticlePage.tsx    # Individual article display
-│   └── NotFoundPage.tsx   # 404 error page
+│   ├── HomePage.tsx                    # Home page with article grid
+│   ├── DynamicComponentArticlePage.tsx # Individual article display
+│   └── NotFoundPage.tsx               # 404 error page
 ├── hooks/
 │   └── useSEO.ts         # SEO meta tag management
 ├── types/
@@ -106,7 +106,7 @@ src/
 <Router>
   <Routes>
     <Route path="/" element={<HomePage />} />
-    <Route path="/article/:id" element={<ArticlePage />} />
+    <Route path="/article/:id" element={<DynamicComponentArticlePage />} />
     <Route path="*" element={<NotFoundPage />} />
   </Routes>
 </Router>
@@ -170,7 +170,7 @@ const handleLanguageChange = (newLanguage: Language) => {
 
 ### URL Parameters Access
 ```typescript
-// In ArticlePage component
+// In DynamicComponentArticlePage component
 const { id } = useParams<{ id: string }>();
 const page = pages.find(p => p.id === id);
 ```

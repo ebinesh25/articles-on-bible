@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Book, Heart, Star, Sparkles, Globe } from 'lucide-react';
 import contentData from '../data/content.json';
-import { Language } from '../types';
+import { Language, DynamicContentData, ContentEntry } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';
 
@@ -12,10 +12,18 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
-  const pages = contentData.pages;
+  const data = contentData as DynamicContentData;
+  const pages = data.pages;
 
   // Set SEO meta for home page
   useDocumentTitle({ language });
+
+  // Helper function to extract preview text from dynamic content
+  const getPreviewText = (pageContent: { tamil: ContentEntry[]; english: ContentEntry[] }, language: Language): string => {
+    const entries = pageContent[language];
+    const mainTextEntry = entries.find((entry: ContentEntry) => entry.type === 'mainText');
+    return mainTextEntry ? mainTextEntry.value.substring(0, 120) : '';
+  };
 
   const getFontClass = () => {
     return language === 'tamil' ? 'font-catamaran' : 'font-inter';
@@ -30,7 +38,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
             <Link to="/" className="flex items-center space-x-2">
               <Book className="h-8 w-8 text-amber-700" />
               <span className={`text-xl font-semibold text-gray-800 ${getFontClass()}`}>
-                {language === 'tamil' ? 'ஜெஸ்ஸி ஆனந்த்' : 'Jessie Anand'}
+                {data.author[language]}
               </span>
             </Link>
             
@@ -97,7 +105,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                     {page.title[language]}
                   </h3>
                   <p className={`text-gray-600 text-sm line-clamp-3 ${getFontClass()}`}>
-                    {page.content[language].mainText.substring(0, 120)}...
+                    {getPreviewText(page.content, language)}...
                   </p>
                 </Link>
               ))}
@@ -118,7 +126,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                       {page.title[language]}
                     </h3>
                     <p className={`text-gray-600 text-sm line-clamp-3 ${getFontClass()}`}>
-                      {page.content[language].mainText.substring(0, 120)}...
+                      {getPreviewText(page.content, language)}...
                     </p>
                   </Link>
                 ))}
