@@ -22,8 +22,15 @@ marked.setOptions({
   gfm: true,
   breaks: true,
 });
+
 const MarkdownRenderer: React.FC<MarkdownProps> = ({ text, className }) => {
-  const html = useMemo(() => marked.parse(text), [text]);
+  const html = useMemo(() => {
+    const rawHtml = marked.parse(text) as string;
+    // Add mt-4 class to all paragraph tags
+    const htmlWithSpacing = rawHtml.replace(/<p>/g, '<p class="mt-4">');
+    return htmlWithSpacing;
+  }, [text]);
+  
   return (
     <div
       className={className}

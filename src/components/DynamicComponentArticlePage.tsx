@@ -133,11 +133,11 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
               })}
             </div>
             {/* Back link */}
-            <div className="mt-8 text-center">
+            {/* <div className="mt-8 text-center">
               <Link to={getUrlWithLanguage('/', language)} className="text-amber-700 hover:underline">
                 {language === 'tamil' ? 'மீண்டும் தளத்திற்கு' : 'Back to Home'}
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
