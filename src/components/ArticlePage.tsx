@@ -174,6 +174,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ language, setLanguage }) => {
               )}
 
               {/* Reflection */}
+             { page.content[language].reflection && (
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-8 mt-12">
                 <h3 className={`text-2xl font-semibold text-amber-800 mb-4 flex items-center ${getFontClass()}`}>
                   <Heart className="h-6 w-6 mr-2" />
@@ -182,7 +183,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ language, setLanguage }) => {
                 <p className={`text-amber-900 leading-relaxed italic ${getFontClass()}`}>
                   {page.content[language].reflection}
                 </p>
-              </div>
+              </div>)}
             </div>
 
             {/* Author */}
