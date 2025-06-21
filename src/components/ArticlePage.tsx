@@ -37,6 +37,28 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ language, setLanguage }) => {
         return 'from-amber-100 to-yellow-100 text-amber-800';
       case 'light':
         return 'from-gray-50 to-stone-100 text-stone-800';
+      case 'dark':
+        return 'from-gray-900 to-gray-800 text-white';
+      case 'black':
+        return 'from-gray-900 to-gray-700 text-white';
+      case 'purple':
+        return 'from-purple-50 to-purple-100 text-purple-900';
+      case 'green':
+        return 'from-green-50 to-green-100 text-green-900';
+      case 'red':
+        return 'from-red-50 to-red-100 text-red-900';
+      case 'pink':
+        return 'from-pink-50 to-pink-100 text-pink-900';
+      case 'yellow':
+        return 'from-yellow-50 to-yellow-100 text-yellow-900';
+      case 'orange':
+        return 'from-orange-50 to-orange-100 text-orange-900';
+      case 'teal':
+        return 'from-teal-50 to-teal-100 text-teal-900';
+      case 'cyan':
+        return 'from-cyan-50 to-cyan-100 text-cyan-900';
+      case 'lime':
+        return 'from-lime-50 to-lime-100 text-lime-900';
       default:
         return 'from-gray-50 to-white text-gray-800';
     }
@@ -54,6 +76,28 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ language, setLanguage }) => {
         return 'text-amber-700 border-amber-300';
       case 'light':
         return 'text-stone-600 border-stone-300';
+      case 'dark':
+        return 'text-white border-gray-600';
+      case 'black':
+        return 'text-white border-gray-700';
+      case 'purple':
+        return 'text-purple-700 border-purple-300';
+      case 'green':
+        return 'text-green-700 border-green-300'; 
+      case 'red':
+        return 'text-red-700 border-red-300';
+      case 'pink':
+        return 'text-pink-700 border-pink-300';
+      case 'yellow':
+        return 'text-yellow-700 border-yellow-300';
+      case 'orange':  
+        return 'text-orange-700 border-orange-300';
+      case 'teal':
+        return 'text-teal-700 border-teal-300';
+      case 'cyan':
+        return 'text-cyan-700 border-cyan-300';
+      case 'lime':
+        return 'text-lime-700 border-lime-300';
       default:
         return 'text-gray-600 border-gray-300';
     }
@@ -107,6 +151,18 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ language, setLanguage }) => {
                 page.theme === 'warm' ? 'from-amber-400 to-orange-500' :
                 page.theme === 'blue' ? 'from-blue-400 to-indigo-500' :
                 page.theme === 'brown' ? 'from-amber-400 to-yellow-500' :
+                page.theme === 'light' ? 'from-stone-200 to-stone-300' :
+                page.theme === 'dark' ? 'from-gray-800 to-gray-900' :
+                page.theme === 'black' ? 'from-gray-900 to-gray-800' :
+                page.theme === 'purple' ? 'from-purple-400 to-purple-500' :
+                page.theme === 'green' ? 'from-green-400 to-green-500' :
+                page.theme === 'red' ? 'from-red-400 to-red-500' :
+                page.theme === 'pink' ? 'from-pink-400 to-pink-500' :
+                page.theme === 'yellow' ? 'from-yellow-400 to-yellow-500' :
+                page.theme === 'orange' ? 'from-orange-400 to-orange-500' :
+                page.theme === 'teal' ? 'from-teal-400 to-teal-500' :
+                page.theme === 'cyan' ? 'from-cyan-400 to-cyan-500' :
+                page.theme === 'lime' ? 'from-lime-400 to-lime-500' :
                 'from-stone-400 to-gray-500'
               }`}></div>
             </div>
