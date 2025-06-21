@@ -1,0 +1,105 @@
+/* Markdown styles to ensure proper rendering in production */
+.markdown-content {
+  line-height: 1.6;
+}
+
+.markdown-content strong,
+.markdown-content b {
+  font-weight: bold !important;
+}
+
+.markdown-content em,
+.markdown-content i {
+  font-style: italic !important;
+}
+
+.markdown-content h1 {
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  margin: 1.5rem 0 1rem 0 !important;
+}
+
+.markdown-content h2 {
+  font-size: 1.75rem !important;
+  font-weight: bold !important;
+  margin: 1.25rem 0 0.75rem 0 !important;
+}
+
+.markdown-content h3 {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  margin: 1rem 0 0.5rem 0 !important;
+}
+
+.markdown-content h4 {
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  margin: 0.75rem 0 0.5rem 0 !important;
+}
+
+.markdown-content h5 {
+  font-size: 1.125rem !important;
+  font-weight: bold !important;
+  margin: 0.75rem 0 0.5rem 0 !important;
+}
+
+.markdown-content h6 {
+  font-size: 1rem !important;
+  font-weight: bold !important;
+  margin: 0.5rem 0 !important;
+}
+
+.markdown-content p {
+  margin: 1rem 0 !important;
+}
+
+.markdown-content ul {
+  margin: 1rem 0 !important;
+  padding-left: 2rem !important;
+  list-style-type: disc !important;
+}
+
+.markdown-content ol {
+  margin: 1rem 0 !important;
+  padding-left: 2rem !important;
+  list-style-type: decimal !important;
+}
+
+.markdown-content li {
+  margin: 0.25rem 0 !important;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid #e5e7eb !important;
+  padding-left: 1rem !important;
+  margin: 1rem 0 !important;
+  font-style: italic !important;
+  color: #6b7280 !important;
+}
+
+.markdown-content code {
+  background-color: #f3f4f6 !important;
+  padding: 0.125rem 0.25rem !important;
+  border-radius: 0.25rem !important;
+  font-family: monospace !important;
+  font-size: 0.875rem !important;
+}
+
+.markdown-content pre {
+  background-color: #f3f4f6 !important;
+  padding: 1rem !important;
+  border-radius: 0.5rem !important;
+  overflow-x: auto !important;
+  margin: 1rem 0 !important;
+}
+
+.markdown-content a {
+  color: #3b82f6 !important;
+  text-decoration: underline !important;
+}
+
+.markdown-content br {
+  display: block !important;
+  margin: 0.5rem 0 !important;
+  content: " " !important;
+}
