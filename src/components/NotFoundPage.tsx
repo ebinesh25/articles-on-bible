@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Book, Home } from 'lucide-react';
 import { Language } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';
+import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
 
 interface NotFoundPageProps {
   language: Language;
 }
 
 const NotFoundPage: React.FC<NotFoundPageProps> = ({ language }) => {
+  const { trackEvent } = useGoogleAnalytics();
+  
   // Set SEO meta for 404 page
   useDocumentTitle({
     title: language === 'tamil' ? 'பக்கம் கிடைக்கவில்லை | ஜெஸ்ஸி ஆனந்த்' : 'Page Not Found | Jessie Anand',
@@ -18,6 +21,17 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ language }) => {
       : 'The page you are looking for might not exist or has been moved.',
     language
   });
+
+  // Track 404 page views
+  useEffect(() => {
+    trackEvent('page_not_found', {
+      event_category: 'error',
+      event_label: window.location.pathname,
+      error_type: '404',
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct'
+    });
+  }, [trackEvent]);
 
   const getFontClass = () => {
     return language === 'tamil' ? 'font-catamaran' : 'font-inter';

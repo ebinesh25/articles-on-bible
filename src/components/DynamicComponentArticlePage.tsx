@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Book, Globe, Heart } from 'lucide-react';
 import contentData from '../data/content.json';
@@ -6,6 +6,7 @@ import { Language, DynamicContentData, ContentEntry } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';
 import MarkdownRenderer from './MarkdownRenderer';
+import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
 
 interface DynamicComponentArticlePageProps {
   language: Language;
@@ -17,9 +18,17 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
   const data = contentData as DynamicContentData;
   const pages = data.pages;
   const page = pages.find(p => p.id === id);
+  const { trackButtonClick, trackArticleView } = useGoogleAnalytics();
   
   // Set page title for SEO - the hook already handles both formats
   useDocumentTitle({ page: page, language });
+
+  // Track article view when component mounts or when page changes
+  useEffect(() => {
+    if (page) {
+      trackArticleView(page.id, page.title[language]);
+    }
+  }, [page, language, trackArticleView]);
 
   // Redirect if not found
   if (!page) return <Navigate to="/" replace />;
@@ -81,12 +90,23 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
             <Link
               to={getUrlWithLanguage('/', language)}
               className="flex items-center space-x-2 text-gray-700 hover:text-amber-700"
+              onClick={() => trackButtonClick('home_navigation', { 
+                from_article: id || 'unknown',
+                article_title: page?.title[language] || 'unknown'
+              })}
             >
               <Book className="h-6 w-6" />
               <span className={`text-lg font-semibold ${getFontClass()}`}>{data.author[language]}</span>
             </Link>
             <button
-              onClick={() => setLanguage(language === 'tamil' ? 'english' : 'tamil')}
+              onClick={() => {
+                trackButtonClick('language_toggle_article', { 
+                  current_language: language,
+                  target_language: language === 'tamil' ? 'english' : 'tamil',
+                  article_id: id || 'unknown'
+                });
+                setLanguage(language === 'tamil' ? 'english' : 'tamil');
+              }}
               className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800"
             >
               <Globe className="h-4 w-4" />

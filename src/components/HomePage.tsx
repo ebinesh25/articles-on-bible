@@ -5,6 +5,7 @@ import contentData from '../data/content.json';
 import { Language, DynamicContentData, ContentEntry } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';
+import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
 
 interface HomePageProps {
   language: Language;
@@ -14,6 +15,7 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
   const data = contentData as DynamicContentData;
   const pages = data.pages;
+  const { trackButtonClick } = useGoogleAnalytics();
 
   // Set SEO meta for home page
   useDocumentTitle({ language });
@@ -43,7 +45,13 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
             </Link>
             
             <button
-              onClick={() => setLanguage(language === 'tamil' ? 'english' : 'tamil')}
+              onClick={() => {
+                trackButtonClick('language_toggle', { 
+                  current_language: language,
+                  target_language: language === 'tamil' ? 'english' : 'tamil'
+                });
+                setLanguage(language === 'tamil' ? 'english' : 'tamil');
+              }}
               className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 transition-colors duration-200"
             >
               <Globe className="h-4 w-4" />
@@ -97,6 +105,11 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                   key={page.id}
                   to={getUrlWithLanguage(`/article/${page.id}`, language)}
                   className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group border border-white/50"
+                  onClick={() => trackButtonClick('article_card_click', { 
+                    article_id: page.id,
+                    article_title: page.title[language],
+                    card_position: 'featured'
+                  })}
                 >
                   <div className="flex items-center justify-center mb-4">
                     <Heart className="h-8 w-8 text-amber-600 group-hover:scale-110 transition-transform duration-200" />
@@ -118,6 +131,11 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                     key={page.id}
                     to={getUrlWithLanguage(`/article/${page.id}`, language)}
                     className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group border border-white/50"
+                    onClick={() => trackButtonClick('article_card_click', { 
+                      article_id: page.id,
+                      article_title: page.title[language],
+                      card_position: 'additional'
+                    })}
                   >
                     <div className="flex items-center justify-center mb-4">
                       <Star className="h-8 w-8 text-amber-600 group-hover:scale-110 transition-transform duration-200" />

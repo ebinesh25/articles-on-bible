@@ -3,12 +3,15 @@ import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from
 import HomePage from './components/HomePage';
 import DynamicComponentArticlePage from './components/DynamicComponentArticlePage';
 import NotFoundPage from './components/NotFoundPage';
+import GlobalClickTracker from './components/GlobalClickTracker';
 import { Language } from './types';
+import { useGoogleAnalytics } from './hooks/useGoogleAnalytics';
 
 function AppContent() {
   const [language, setLanguage] = useState<Language>('tamil');
   const location = useLocation();
   const navigate = useNavigate();
+  const { trackLanguageChange } = useGoogleAnalytics();
 
   // Read language from URL parameter on mount and route changes
   useEffect(() => {
@@ -20,9 +23,13 @@ function AppContent() {
     }
   }, [location.search]);
 
-  // Enhanced setLanguage function to update URL
+  // Enhanced setLanguage function to update URL and track language changes
   const handleLanguageChange = (newLanguage: Language) => {
+    const previousLanguage = language;
     setLanguage(newLanguage);
+    
+    // Track language change
+    trackLanguageChange(previousLanguage, newLanguage);
     
     // Update URL with language parameter
     const urlParams = new URLSearchParams(location.search);
@@ -56,6 +63,7 @@ function AppContent() {
 function App() {
   return (
     <Router>
+      <GlobalClickTracker />
       <AppContent />
     </Router>
   );
