@@ -2,3 +2,7 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[build.environment]
+  VITE_GA_TRACKING_ID = "G-CVRLXZ6V3C"
+  VITE_DISABLE_GA = "false"

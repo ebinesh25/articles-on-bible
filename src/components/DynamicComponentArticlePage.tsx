@@ -134,7 +134,7 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
                   case 'reflection':
                     return (
                       <div key={idx} className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-8 mt-12">
-                        <h3 className={`text-2xl font-semibold text-amber-800 mb-4 flex items-center ${getFontClass()}`}>
+                        <h3 className={`text-2xl mt-0 font-semibold text-amber-800 mb-4 flex items-center ${getFontClass()}`}>
                           <Heart className="h-6 w-6 mr-2" />
                           {language === 'tamil' ? 'சிந்தனை' : 'Reflection'}
                         </h3>

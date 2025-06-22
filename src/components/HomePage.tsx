@@ -125,7 +125,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
             </div>
 
             {pages.length > 3 && (
-              <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mt-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto mt-6">
                 {pages.slice(3).map((page) => (
                   <Link
                     key={page.id}

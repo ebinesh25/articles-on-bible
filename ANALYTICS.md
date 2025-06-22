@@ -21,6 +21,16 @@ This project now includes comprehensive Google Analytics tracking for user behav
 
 ## Manual Tracking Usage
 
+### Environment Variables Setup
+
+First, configure your Google Analytics tracking ID:
+
+```bash
+# In .env, .env.local, or .env.production
+VITE_GA_TRACKING_ID=G-XXXXXXXXXX  # Your GA4 Measurement ID
+VITE_DISABLE_GA=false             # Enable/disable tracking
+```
+
 ### Using the useEasyTracking Hook
 
 ```tsx
@@ -157,3 +167,145 @@ In Google Analytics 4:
 - `page_time_spent`: Time spent on each page
 - `scroll_milestone`: User scrolls to 25%, 50%, 75%, 90%
 - `article_card_click`: User clicks on article cards
+
+# 🔧 Disabling Google Analytics
+
+You can disable Google Analytics tracking in several ways:
+
+## 1. Environment Variables
+
+### Development Mode (Automatic)
+```bash
+# Automatically disabled in development
+npm run dev
+```
+
+### Environment Variable
+```bash
+# In .env file or .env.local
+VITE_GA_TRACKING_ID=G-XXXXXXXXXX  # Your tracking ID
+VITE_DISABLE_GA=true              # Disable tracking
+```
+
+### Production Build with Different Tracking ID
+```bash
+VITE_GA_TRACKING_ID=G-PROD123 VITE_DISABLE_GA=false npm run build
+```
+
+## 2. Runtime Control
+
+### Disable Globally at Runtime
+```typescript
+import { disableGoogleAnalytics, enableGoogleAnalytics } from '../utils/analyticsControl';
+
+// Disable tracking
+disableGoogleAnalytics();
+
+// Enable tracking
+enableGoogleAnalytics();
+```
+
+### Using the Control Hook
+```tsx
+import { useGoogleAnalyticsControl } from '../utils/analyticsControl';
+
+const SettingsComponent = () => {
+  const { isEnabled, toggle, status } = useGoogleAnalyticsControl();
+
+  return (
+    <div>
+      <p>Analytics: {isEnabled ? 'Enabled' : 'Disabled'}</p>
+      <button onClick={toggle}>
+        {isEnabled ? 'Disable' : 'Enable'} Analytics
+      </button>
+      
+      {/* Debug info */}
+      <pre>{JSON.stringify(status, null, 2)}</pre>
+    </div>
+  );
+};
+```
+
+### Browser Console Control
+```javascript
+// Disable from browser console
+window.GA_TRACKING_DISABLED = true;
+
+// Enable from browser console  
+window.GA_TRACKING_DISABLED = false;
+```
+
+## 3. Check Tracking Status
+
+```typescript
+import { getTrackingStatus, isGoogleAnalyticsEnabled } from '../utils/analyticsControl';
+
+// Simple check
+const enabled = isGoogleAnalyticsEnabled();
+
+// Detailed status
+const status = getTrackingStatus();
+console.log(status);
+// {
+//   enabled: false,
+//   gtagAvailable: true,
+//   environmentDisabled: true,
+//   developmentMode: true,
+//   manuallyDisabled: false
+// }
+```
+
+## 4. Priority Order
+
+Tracking is disabled if **any** of these conditions are true:
+1. `import.meta.env.MODE === 'development'` (Development mode)
+2. `import.meta.env.VITE_DISABLE_GA === 'true'` (Environment variable)
+3. `window.GA_TRACKING_DISABLED === true` (Runtime flag)
+4. `window.gtag` is not available (Script not loaded)
+
+## 5. User Privacy Control
+
+You can add a privacy toggle to your UI:
+
+```tsx
+import { useGoogleAnalyticsControl } from '../utils/analyticsControl';
+
+const PrivacySettings = () => {
+  const { isEnabled, toggle } = useGoogleAnalyticsControl();
+
+  return (
+    <label>
+      <input 
+        type="checkbox" 
+        checked={isEnabled} 
+        onChange={toggle}
+      />
+      Allow Analytics Tracking
+    </label>
+  );
+};
+```
+
+This respects user privacy and gives them control over their data.
+
+## 📋 Environment Variables
+
+| Variable | Description | Default | Example |
+|----------|-------------|---------|---------|
+| `VITE_GA_TRACKING_ID` | Google Analytics 4 Measurement ID | `G-CVRLXZ6V3C` | `G-XXXXXXXXXX` |
+| `VITE_DISABLE_GA` | Disable all tracking | `false` | `true` |
+
+### Environment Files
+
+- **`.env.development`** - Development settings (GA disabled by default)
+- **`.env.production`** - Production settings (GA enabled with your tracking ID)
+- **`.env.local`** - Local overrides (not committed to git)
+
+### Netlify/Deployment Setup
+
+```toml
+# netlify.toml
+[build.environment]
+  VITE_GA_TRACKING_ID = "G-XXXXXXXXXX"
+  VITE_DISABLE_GA = "false"
+```

@@ -2,6 +2,19 @@ import { useEffect } from 'react';
 import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
 
 /**
+ * Check if Google Analytics tracking is enabled
+ */
+const isTrackingEnabled = (): boolean => {
+  const disableTracking = import.meta.env.MODE === 'development' || 
+                         import.meta.env.VITE_DISABLE_GA === 'true' ||
+                         (typeof window !== 'undefined' && window.GA_TRACKING_DISABLED === true);
+  
+  return !disableTracking && 
+         typeof window !== 'undefined' && 
+         typeof window.gtag !== 'undefined';
+};
+
+/**
  * Global click tracker component that automatically tracks clicks on specific elements
  * Add this to your main App component to track all button and link clicks
  */
@@ -9,6 +22,10 @@ export const GlobalClickTracker: React.FC = () => {
   const { trackEvent } = useGoogleAnalytics();
 
   useEffect(() => {
+    // Early return if tracking is disabled
+    if (!isTrackingEnabled()) {
+      return;
+    }
     const handleGlobalClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       
