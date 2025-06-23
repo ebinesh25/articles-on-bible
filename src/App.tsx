@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import HomePage from './components/HomePage';
+import ArticleCreatePage from './components/ArticleCreatePage';
 import DynamicComponentArticlePage from './components/DynamicComponentArticlePage';
 import NotFoundPage from './components/NotFoundPage';
 import GlobalClickTracker from './components/GlobalClickTracker';
@@ -48,9 +49,13 @@ function AppContent() {
         path="/" 
         element={<HomePage language={language} setLanguage={handleLanguageChange} />} 
       />
-      <Route 
-        path="/article/:id" 
-        element={<DynamicComponentArticlePage language={language} setLanguage={handleLanguageChange} />} 
+    <Route
+        path="/article/create"
+        element={<ArticleCreatePage language={language} setLanguage={handleLanguageChange} />}
+      />
+      <Route
+        path="/article/:id"
+        element={<DynamicComponentArticlePage language={language} setLanguage={handleLanguageChange} />}
       />
       <Route 
         path="*" 

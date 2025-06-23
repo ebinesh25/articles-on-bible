@@ -11,6 +11,11 @@ This application now uses React Router for dynamic routing, allowing each articl
 - **Description**: Landing page displaying all articles with preview cards
 - **Language Support**: `/?la=english` or `/?la=tamil`
 
+### Create Article Page
+- **URL**: `/article/create`
+- **Component**: `ArticleCreatePage`
+- **Description**: Form to create a new article (fields for ID, theme, titles, and dynamic content in both languages).
+
 ### Article Pages
 - **URL**: `/article/:id`
 - **Component**: `DynamicComponentArticlePage`
@@ -116,9 +121,9 @@ src/
 
 To add new articles:
 
-1. Add the article data to `src/data/content.json` following the existing structure
-2. The article will automatically be available at `/article/{your-article-id}`
-3. No additional routing configuration needed
+1. Use the article-creation form by visiting `/article/create?la={english|tamil}` and submit the new entry.
+2. Or manually add the article data to `src/data/content.json` following the existing structure.
+3. The article will automatically be available at `/article/{your-article-id}` with no additional routing configuration.
 
 ## Usage Examples
 
