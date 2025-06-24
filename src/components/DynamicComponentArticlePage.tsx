@@ -128,7 +128,9 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
                   case 'scripture':
                     return (
                       <div key={idx} className={`border-l-4 ${getAccentColor(page.theme)} pl-6 my-8`}>
-                        <p className={`text-xl italic ${getFontClass()}`}>"{entry.value}"</p>
+                        {/* <p className={`text-xl italic ${getFontClass()}`}>"{entry.value}"</p> */}
+                        <MarkdownRenderer text={entry.value} className={`text-xl italic ${getFontClass()}`} />
+
                       </div>
                     );
                   case 'reflection':
