@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Book, Heart, Star, Sparkles, Globe, Loader2 } from 'lucide-react';
+import { Book, Heart, Star, Sparkles, Globe, Loader2, Plus } from 'lucide-react';
 import contentData from '../data/content.json';
 import { Language, DynamicContentData, ContentEntry } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
@@ -48,21 +48,23 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
               </span>
             </Link>
             
-            <button
-              onClick={() => {
-                trackButtonClick('language_toggle', { 
-                  current_language: language,
-                  target_language: language === 'tamil' ? 'english' : 'tamil'
-                });
-                setLanguage(language === 'tamil' ? 'english' : 'tamil');
-              }}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 transition-colors duration-200"
-            >
-              <Globe className="h-4 w-4" />
-              <span className="font-medium">
-                {language === 'tamil' ? 'English' : 'தமிழ்'}
-              </span>
-            </button>
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => {
+                  trackButtonClick('language_toggle', { 
+                    current_language: language,
+                    target_language: language === 'tamil' ? 'english' : 'tamil'
+                  });
+                  setLanguage(language === 'tamil' ? 'english' : 'tamil');
+                }}
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 transition-colors duration-200"
+              >
+                <Globe className="h-4 w-4" />
+                <span className="font-medium">
+                  {language === 'tamil' ? 'English' : 'தமிழ்'}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </nav>

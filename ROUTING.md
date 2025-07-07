@@ -26,6 +26,20 @@ This application now uses React Router for dynamic routing, allowing each articl
   - `/article/available?la=english` - Displays "AVAILABLE" in English
   - `/article/take-care?la=english` - Displays "TAKE CARE" in English
 
+### Create Article Page
+- **URL**: `/create`
+- **Component**: `CreateArticlePage`
+- **Description**: Form page for creating new articles
+- **Language Support**: Add `?la=english` or `?la=tamil` to set language
+- **API**: Uses POST `/articles/` to create new articles
+
+### Edit Article Page
+- **URL**: `/edit/article/:articleId`
+- **Component**: `EditArticlePage`
+- **Description**: Form page for editing existing articles where `:articleId` corresponds to the article ID
+- **Language Support**: Add `?la=english` or `?la=tamil` to set language
+- **API**: Uses PUT `/articles/{id}` to update existing articles
+
 ### 404 Page
 - **URL**: Any invalid route (e.g., `/article/non-existent`)
 - **Component**: `NotFoundPage`
