@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { Book, Globe, Heart } from 'lucide-react';
+import { Book, Globe, Heart, Loader2, AlertCircle } from 'lucide-react';
 import contentData from '../data/content.json';
 import { Language, DynamicContentData, ContentEntry } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';
 import MarkdownRenderer from './MarkdownRenderer';
 import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
+import { useArticle } from '../hooks/useArticle';
 
 interface DynamicComponentArticlePageProps {
   language: Language;
@@ -16,9 +17,14 @@ interface DynamicComponentArticlePageProps {
 const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = ({ language, setLanguage }) => {
   const { id } = useParams<{ id: string }>();
   const data = contentData as DynamicContentData;
-  const pages = data.pages;
-  const page = pages.find(p => p.id === id);
+  const { article, loading, error } = useArticle(id);
   const { trackButtonClick, trackArticleView } = useGoogleAnalytics();
+  
+  // Use API article if available, otherwise fallback to static data
+  const page = article || data.pages.find(p => p.id === id);
+  
+  // Helper function for font styling - defined early to avoid hoisting issues
+  const getFontClass = () => language === 'tamil' ? 'font-catamaran' : 'font-inter';
   
   // Set page title for SEO - the hook already handles both formats
   useDocumentTitle({ page: page, language });
@@ -30,11 +36,56 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
     }
   }, [page, language, trackArticleView]);
 
-  // Redirect if not found
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-amber-600 mx-auto mb-4" />
+          <p className={`text-gray-600 text-lg ${getFontClass()}`}>
+            {language === 'tamil' ? 'கட்டுரை ஏற்றப்படுகிறது...' : 'Loading article...'}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error && !page) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+          <h1 className={`text-2xl font-semibold text-gray-800 mb-4 ${getFontClass()}`}>
+            {language === 'tamil' ? 'கட்டுரை கிடைக்கவில்லை' : 'Article Not Found'}
+          </h1>
+          <p className={`text-gray-600 mb-6 ${getFontClass()}`}>
+            {language === 'tamil' 
+              ? 'நீங்கள் தேடும் கட்டுரை கிடைக்கவில்லை அல்லது அகற்றப்பட்டிருக்கலாம்.'
+              : 'The article you are looking for could not be found or may have been removed.'}
+          </p>
+          <Link
+            to={getUrlWithLanguage('/', language)}
+            className="inline-flex items-center px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors duration-200"
+            onClick={() => trackButtonClick('error_home_navigation', { 
+              error_type: 'article_not_found',
+              article_id: id || 'unknown'
+            })}
+          >
+            <Book className="h-5 w-5 mr-2" />
+            <span className={getFontClass()}>
+              {language === 'tamil' ? 'முகப்புக்கு செல்லுங்கள்' : 'Go to Home'}
+            </span>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect if not found (fallback)
   if (!page) return <Navigate to="/" replace />;
 
   // Helpers for styling based on theme
-  const getFontClass = () => language === 'tamil' ? 'font-catamaran' : 'font-inter';
   const getThemeColors = (theme: string) => {
     switch (theme) {
       case 'gray':  return 'from-slate-100 to-gray-200 text-gray-800';
@@ -118,6 +169,20 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
 
       {/* Article */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Error banner if API failed but fallback data is available */}
+        {error && page && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <div className="flex items-center">
+              <AlertCircle className="h-5 w-5 text-yellow-600 mr-2" />
+              <p className={`text-yellow-800 text-sm ${getFontClass()}`}>
+                {language === 'tamil' 
+                  ? 'சமீபத்திய தரவு ஏற்ற முடியவில்லை. சேமிக்கப்பட்ட உள்ளடக்கம் காட்டப்படுகிறது.'
+                  : 'Unable to load latest data. Showing cached content.'}
+              </p>
+            </div>
+          </div>
+        )}
+        
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden">
           <div className="p-8 md:p-12">
             <h1 className={`text-4xl md:text-6xl font-light mb-6 text-center ${getFontClass()}`}>{page.title[language]}</h1>
