@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "migrate": "node migrate-to-supabase.js",
+    "migrate:dry-run": "node migrate-to-supabase.js --dry-run --verbose",
+    "migrate:clear": "node migrate-to-supabase.js --clear --verbose"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
@@ -21,6 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@supabase/supabase-js": "^2.50.3",
     "@types/marked": "^6.0.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",

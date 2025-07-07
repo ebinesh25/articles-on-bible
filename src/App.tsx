@@ -4,6 +4,10 @@ import HomePage from './components/HomePage';
 import DynamicComponentArticlePage from './components/DynamicComponentArticlePage';
 import NotFoundPage from './components/NotFoundPage';
 import GlobalClickTracker from './components/GlobalClickTracker';
+import { SupabaseProvider } from './contexts/SupabaseContext';
+import TestSupabaseComponent from './components/TestSupabaseComponent';
+import AdminPanel from './components/admin/AdminPanel';
+import AdminQuickAccess from './components/AdminQuickAccess';
 import { Language } from './types';
 import { useGoogleAnalytics } from './hooks/useGoogleAnalytics';
 
@@ -53,6 +57,10 @@ function AppContent() {
         element={<DynamicComponentArticlePage language={language} setLanguage={handleLanguageChange} />} 
       />
       <Route 
+        path="/admin" 
+        element={<AdminPanel />} 
+      />
+      <Route 
         path="*" 
         element={<NotFoundPage language={language} />} 
       />
@@ -62,10 +70,14 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <GlobalClickTracker />
-      <AppContent />
-    </Router>
+    <SupabaseProvider>
+      <Router>
+        <GlobalClickTracker />
+        <AppContent />
+        <AdminQuickAccess />
+        <TestSupabaseComponent />
+      </Router>
+    </SupabaseProvider>
   );
 }
 
