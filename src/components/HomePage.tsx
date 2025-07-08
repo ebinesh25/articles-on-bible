@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Book, Heart, Star, Sparkles, Globe } from 'lucide-react';
+import { Book, Heart, Star, Sparkles, Globe, Loader2, Plus } from 'lucide-react';
 import contentData from '../data/content.json';
 import { Language, DynamicContentData, ContentEntry } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';
 import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
+import { useArticles } from '../hooks/useArticles';
 
 interface HomePageProps {
   language: Language;
@@ -14,8 +15,11 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
   const data = contentData as DynamicContentData;
-  const pages = data.pages;
+  const { articles, loading, error } = useArticles();
   const { trackButtonClick } = useGoogleAnalytics();
+  
+  // Use API articles if available, otherwise fallback to static data
+  const pages = articles.length > 0 ? articles : data.pages;
 
   // Set SEO meta for home page
   useDocumentTitle({ language });
@@ -44,21 +48,23 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
               </span>
             </Link>
             
-            <button
-              onClick={() => {
-                trackButtonClick('language_toggle', { 
-                  current_language: language,
-                  target_language: language === 'tamil' ? 'english' : 'tamil'
-                });
-                setLanguage(language === 'tamil' ? 'english' : 'tamil');
-              }}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 transition-colors duration-200"
-            >
-              <Globe className="h-4 w-4" />
-              <span className="font-medium">
-                {language === 'tamil' ? 'English' : 'தமிழ்'}
-              </span>
-            </button>
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => {
+                  trackButtonClick('language_toggle', { 
+                    current_language: language,
+                    target_language: language === 'tamil' ? 'english' : 'tamil'
+                  });
+                  setLanguage(language === 'tamil' ? 'english' : 'tamil');
+                }}
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 transition-colors duration-200"
+              >
+                <Globe className="h-4 w-4" />
+                <span className="font-medium">
+                  {language === 'tamil' ? 'English' : 'தமிழ்'}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -99,8 +105,31 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
               }
             </p>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {pages.slice(0, 3).map((page) => (
+            {/* Loading State */}
+            {loading && (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+                <span className={`ml-3 text-gray-600 ${getFontClass()}`}>
+                  {language === 'tamil' ? 'கட்டுரைகள் ஏற்றப்படுகின்றன...' : 'Loading articles...'}
+                </span>
+              </div>
+            )}
+
+            {/* Error State */}
+            {error && !loading && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 max-w-2xl mx-auto">
+                <p className={`text-red-700 text-center ${getFontClass()}`}>
+                  {language === 'tamil' 
+                    ? 'கட்டுரைகளை ஏற்ற முடியவில்லை. நிலையான உள்ளடக்கம் காட்டப்படுகிறது.' 
+                    : 'Failed to load articles. Showing static content.'}
+                </p>
+              </div>
+            )}
+
+            {/* Articles Grid */}
+            {!loading && (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                {pages.slice(0, 3).map((page) => (
                 <Link
                   key={page.id}
                   to={getUrlWithLanguage(`/article/${page.id}`, language)}
@@ -120,11 +149,13 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                   <p className={`text-gray-600 text-sm line-clamp-3 ${getFontClass()}`}>
                     {getPreviewText(page.content, language)}...
                   </p>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            )}
 
-            {pages.length > 3 && (
+            {/* Additional Articles */}
+            {!loading && pages.length > 3 && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto mt-6">
                 {pages.slice(3).map((page) => (
                   <Link
