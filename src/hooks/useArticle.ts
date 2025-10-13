@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DynamicPage } from '../types';
+import { supabase } from '../utils/supabase';
 
 interface UseArticleReturn {
   article: DynamicPage | null;
@@ -23,53 +24,45 @@ export const useArticle = (id: string | undefined): UseArticleReturn => {
       try {
         setLoading(true);
         setError(null);
-        
-        const apiUrl = import.meta.env.VITE_API_URL;
-        if (!apiUrl) {
-          throw new Error('API URL not configured');
+
+        const { data, error: supabaseError } = await supabase
+          .from('articles')
+          .select('*')
+          .eq('id', id)
+          .maybeSingle();
+
+        if (supabaseError) {
+          throw supabaseError;
         }
 
-        const response = await fetch(`${apiUrl}/articles/${id}`);
-        
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error('Article not found');
-          }
-          throw new Error(`HTTP error! status: ${response.status}`);
+        if (!data) {
+          throw new Error('Article not found');
         }
-        
-        const data = await response.json();
-        
-        // Transform API data to match our DynamicPage interface
+
         const transformedArticle: DynamicPage = {
-          id: data.id || id,
+          id: data.id,
           title: {
-            tamil: data.title?.tamil || data.title_tamil || data.title || 'தலைப்பு இல்லை',
-            english: data.title?.english || data.title_english || data.title || 'No Title'
+            tamil: data.title_tamil,
+            english: data.title_english
           },
-          theme: data.theme || 'gray',
+          theme: data.theme,
           content: {
-            tamil: data.content?.tamil || data.content_tamil || [
-              { type: 'mainText', value: data.description?.tamil || data.description || 'உள்ளடக்கம் இல்லை' }
-            ],
-            english: data.content?.english || data.content_english || [
-              { type: 'mainText', value: data.description?.english || data.description || 'No content available' }
-            ]
+            tamil: data.content_tamil,
+            english: data.content_english
           }
         };
-        
+
         setArticle(transformedArticle);
       } catch (err) {
         console.error('Error fetching article:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch article');
-        
-        // Fallback to static data if API fails
+
         try {
           const { default: contentData } = await import('../data/content.json');
           const staticArticle = contentData.pages?.find((p: any) => p.id === id);
           if (staticArticle) {
             setArticle(staticArticle);
-            setError(null); // Clear error since we found fallback data
+            setError(null);
           }
         } catch (fallbackErr) {
           console.error('Error loading fallback data:', fallbackErr);

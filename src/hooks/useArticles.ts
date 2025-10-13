@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DynamicPage } from '../types';
+import { supabase } from '../utils/supabase';
 
 interface UseArticlesReturn {
   articles: DynamicPage[];
@@ -17,49 +18,34 @@ export const useArticles = (): UseArticlesReturn => {
       try {
         setLoading(true);
         setError(null);
-        
-        const apiUrl = import.meta.env.VITE_API_URL;
-        if (!apiUrl) {
-          throw new Error('API URL not configured');
+
+        const { data, error: supabaseError } = await supabase
+          .from('articles')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (supabaseError) {
+          throw supabaseError;
         }
 
-        const response = await fetch(`${apiUrl}/articles/`);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        // Handle the API response structure - it has an "articles" array
-        const articlesArray = data.articles || data;
-        
-        // Transform API data to match our DynamicPage interface
-        const transformedArticles: DynamicPage[] = Array.isArray(articlesArray) 
-          ? articlesArray.map((article: any) => ({
-              id: article.id || article._id || Math.random().toString(36).substr(2, 9),
-              title: {
-                tamil: article.title?.tamil || article.title_tamil || article.title || 'தலைப்பு இல்லை',
-                english: article.title?.english || article.title_english || article.title || 'No Title'
-              },
-              theme: article.theme || 'gray',
-              content: {
-                tamil: article.content?.tamil || article.content_tamil || [
-                  { type: 'mainText', value: article.excerpt?.tamil || article.description?.tamil || article.description || 'உள்ளடக்கம் இல்லை' }
-                ],
-                english: article.content?.english || article.content_english || [
-                  { type: 'mainText', value: article.excerpt?.english || article.description?.english || article.description || 'No content available' }
-                ]
-              }
-            }))
-          : [];
-        
+        const transformedArticles: DynamicPage[] = (data || []).map((article) => ({
+          id: article.id,
+          title: {
+            tamil: article.title_tamil,
+            english: article.title_english
+          },
+          theme: article.theme,
+          content: {
+            tamil: article.content_tamil,
+            english: article.content_english
+          }
+        }));
+
         setArticles(transformedArticles);
       } catch (err) {
         console.error('Error fetching articles:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch articles');
-        
-        // Fallback to static data if API fails
+
         try {
           const { default: contentData } = await import('../data/content.json');
           const fallbackArticles = (contentData.pages || []).map(page => ({
