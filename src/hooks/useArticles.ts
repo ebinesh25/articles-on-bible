@@ -1,68 +1,28 @@
 import { useState, useEffect } from 'react';
-import { DynamicPage } from '../types';
-import { supabase } from '../utils/supabase';
+import { supabaseClient } from '../utils/supabaseClient';
+import { Article } from '../utils/supabase';
 
-interface UseArticlesReturn {
-  articles: DynamicPage[];
-  loading: boolean;
-  error: string | null;
-}
-
-export const useArticles = (): UseArticlesReturn => {
-  const [articles, setArticles] = useState<DynamicPage[]>([]);
+export function useArticles() {
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    async function loadArticles() {
       try {
         setLoading(true);
-        setError(null);
-
-        const { data, error: supabaseError } = await supabase
-          .from('articles')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (supabaseError) {
-          throw supabaseError;
-        }
-
-        const transformedArticles: DynamicPage[] = (data || []).map((article) => ({
-          id: article.id,
-          title: {
-            tamil: article.title_tamil,
-            english: article.title_english
-          },
-          theme: article.theme,
-          content: {
-            tamil: article.content_tamil,
-            english: article.content_english
-          }
-        }));
-
-        setArticles(transformedArticles);
+        const data = await supabaseClient.getArticles();
+        console.log('Fetched articles:', data);
+        setArticles(data);
       } catch (err) {
-        console.error('Error fetching articles:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch articles');
-
-        try {
-          const { default: contentData } = await import('../data/content.json');
-          const fallbackArticles = (contentData.pages || []).map(page => ({
-            ...page,
-            theme: page.theme || 'gray'
-          }));
-          setArticles(fallbackArticles);
-        } catch (fallbackErr) {
-          console.error('Error loading fallback data:', fallbackErr);
-        }
+        setError(err instanceof Error ? err : new Error('An unknown error occurred'));
       } finally {
         setLoading(false);
       }
-    };
+    }
 
-    fetchArticles();
+    loadArticles();
   }, []);
 
   return { articles, loading, error };
-};
+}

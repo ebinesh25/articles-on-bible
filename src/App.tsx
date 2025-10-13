@@ -43,7 +43,7 @@ function AppContent() {
       search: urlParams.toString()
     }, { replace: true });
   };
-
+  console.log('AppContent render with language:', language);
   return (
     <Routes>
       <Route 
