@@ -117,7 +117,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 max-w-2xl mx-auto">
                 <p className={`text-red-700 text-center ${getFontClass()}`}>
                   {language === 'tamil' 
-                    ? 'கட்டுரைகளை ஏற்ற முடியவில்லை. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.' 
+                    ? 'கட்டுரைகளை ஏற்ற முடியவில்லை. தயவுசெய்து பின்னர் மீண்டும் முயற்சிக்கவும்.' 
                     : 'Failed to load articles. Please try again later.'}
                 </p>
               </div>
@@ -133,7 +133,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                   className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group border border-white/50"
                   onClick={() => trackButtonClick('article_card_click', {
                     article_id: page.id,
-                    article_title: language === 'tamil' ? page.title_tamil : page.title_english,
+                    article_title: page.title[language],
                     card_position: 'featured'
                   })}
                 >
@@ -141,10 +141,10 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                     <Heart className="h-8 w-8 text-amber-600 group-hover:scale-110 transition-transform duration-200" />
                   </div>
                   <h3 className={`text-xl font-semibold text-gray-800 mb-3 ${getFontClass()}`}>
-                    {language === 'tamil' ? page.title_tamil : page.title_english}
+                    {page.title[language]}
                   </h3>
                   <p className={`text-gray-600 text-sm line-clamp-3 ${getFontClass()}`}>
-                    {getPreviewText(language === 'tamil' ? page.content_tamil : page.content_english)}...
+                    {getPreviewText( page?.content[language] || [])}...
                   </p>
                   </Link>
                 ))}
@@ -161,7 +161,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                     className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group border border-white/50"
                     onClick={() => trackButtonClick('article_card_click', {
                       article_id: page.id,
-                      article_title: language === 'tamil' ? page.title_tamil : page.title_english,
+                      article_title: page.title[language],
                       card_position: 'additional'
                     })}
                   >
@@ -169,10 +169,15 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                       <Star className="h-8 w-8 text-amber-600 group-hover:scale-110 transition-transform duration-200" />
                     </div>
                     <h3 className={`text-xl font-semibold text-gray-800 mb-3 ${getFontClass()}`}>
-                      {language === 'tamil' ? page.title_tamil : page.title_english}
+                      {/* {language === 'tamil' ? page.title_tamil : page.title_english}
+                       */}
+                       {page.title[language]}
                     </h3>
                     <p className={`text-gray-600 text-sm line-clamp-3 ${getFontClass()}`}>
-                      {getPreviewText(language === 'tamil' ? page.content_tamil : page.content_english)}...
+                      {/* {getPreviewText(language === 'tamil' ? page.content_tamil : page.content_english)}...
+                       */}
+
+                    {getPreviewText( page?.content[language] || [])}...
                     </p>
                   </Link>
                 ))}
