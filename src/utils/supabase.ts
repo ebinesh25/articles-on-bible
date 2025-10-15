@@ -18,4 +18,11 @@ export interface Article {
   theme: string;
   created_at: string;
   updated_at: string;
+  /**
+   * Audio URLs for the article in different languages
+   */
+  audio: {
+    tamil: string;
+    english: string;
+  };
 }
