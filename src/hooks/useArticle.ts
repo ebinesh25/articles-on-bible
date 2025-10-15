@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
-import { DynamicPage } from '../types';
-import { supabase } from '../utils/supabase';
+import { Article, supabase } from '../utils/supabase';
 
 interface UseArticleReturn {
-  article: DynamicPage | null;
+  article: Article | null;
   loading: boolean;
   error: string | null;
 }
 
 export const useArticle = (id: string | undefined): UseArticleReturn => {
-  const [article, setArticle] = useState<DynamicPage | null>(null);
+  const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,34 +38,10 @@ export const useArticle = (id: string | undefined): UseArticleReturn => {
           throw new Error('Article not found');
         }
 
-        const transformedArticle: DynamicPage = {
-          id: data.id,
-          title: {
-            tamil: data.title_tamil,
-            english: data.title_english
-          },
-          theme: data.theme,
-          content: {
-            tamil: data.content_tamil,
-            english: data.content_english
-          }
-        };
-
-        setArticle(transformedArticle);
+        setArticle(data as Article);
       } catch (err) {
         console.error('Error fetching article:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch article');
-
-        try {
-          const { default: contentData } = await import('../data/content.json');
-          const staticArticle = contentData.pages?.find((p: any) => p.id === id);
-          if (staticArticle) {
-            setArticle(staticArticle);
-            setError(null);
-          }
-        } catch (fallbackErr) {
-          console.error('Error loading fallback data:', fallbackErr);
-        }
       } finally {
         setLoading(false);
       }

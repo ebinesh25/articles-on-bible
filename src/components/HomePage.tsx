@@ -1,33 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Book, Heart, Star, Sparkles, Globe, Loader2, Plus } from 'lucide-react';
-import contentData from '../data/content.json';
-import { Language, DynamicContentData, ContentEntry } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';
 import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
 import { useArticles } from '../hooks/useArticles';
 
 interface HomePageProps {
-  language: Language;
-  setLanguage: (lang: Language) => void;
+  language: 'tamil' | 'english';
+  setLanguage: (lang: 'tamil' | 'english') => void;
 }
 
 const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
-  const data = contentData as DynamicContentData;
+  console.log('Rendering HomePage component');
   const { articles, loading, error } = useArticles();
   const { trackButtonClick } = useGoogleAnalytics();
   
   // Use API articles if available, otherwise fallback to static data
-  const pages = articles.length > 0 ? articles : data.pages;
+  const pages = articles;
 
   // Set SEO meta for home page
   useDocumentTitle({ language });
 
   // Helper function to extract preview text from dynamic content
-  const getPreviewText = (pageContent: { tamil: ContentEntry[]; english: ContentEntry[] }, language: Language): string => {
-    const entries = pageContent[language];
-    const mainTextEntry = entries.find((entry: ContentEntry) => entry.type === 'mainText');
+  const getPreviewText = (pageContent: Array<{ type: string; value: string }>): string => {
+    const mainTextEntry = pageContent.find((entry) => entry.type === 'mainText');
     return mainTextEntry ? mainTextEntry.value.substring(0, 120) : '';
   };
 
@@ -44,14 +41,14 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
             <Link to="/" className="flex items-center space-x-2">
               <Book className="h-8 w-8 text-amber-700" />
               <span className={`text-xl font-semibold text-gray-800 ${getFontClass()}`}>
-                {data.author[language]}
+                {language === 'tamil' ? 'பெயர்' : 'Name'}
               </span>
             </Link>
             
             <div className="flex items-center space-x-3">
               <button
                 onClick={() => {
-                  trackButtonClick('language_toggle', { 
+                  trackButtonClick('language_toggle', {
                     current_language: language,
                     target_language: language === 'tamil' ? 'english' : 'tamil'
                   });
@@ -120,8 +117,8 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 max-w-2xl mx-auto">
                 <p className={`text-red-700 text-center ${getFontClass()}`}>
                   {language === 'tamil' 
-                    ? 'கட்டுரைகளை ஏற்ற முடியவில்லை. நிலையான உள்ளடக்கம் காட்டப்படுகிறது.' 
-                    : 'Failed to load articles. Showing static content.'}
+                    ? 'கட்டுரைகளை ஏற்ற முடியவில்லை. தயவுசெய்து பின்னர் மீண்டும் முயற்சிக்கவும்.' 
+                    : 'Failed to load articles. Please try again later.'}
                 </p>
               </div>
             )}
@@ -134,7 +131,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                   key={page.id}
                   to={getUrlWithLanguage(`/article/${page.id}`, language)}
                   className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group border border-white/50"
-                  onClick={() => trackButtonClick('article_card_click', { 
+                  onClick={() => trackButtonClick('article_card_click', {
                     article_id: page.id,
                     article_title: page.title[language],
                     card_position: 'featured'
@@ -147,7 +144,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                     {page.title[language]}
                   </h3>
                   <p className={`text-gray-600 text-sm line-clamp-3 ${getFontClass()}`}>
-                    {getPreviewText(page.content, language)}...
+                    {getPreviewText( page?.content[language] || [])}...
                   </p>
                   </Link>
                 ))}
@@ -162,7 +159,7 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                     key={page.id}
                     to={getUrlWithLanguage(`/article/${page.id}`, language)}
                     className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group border border-white/50"
-                    onClick={() => trackButtonClick('article_card_click', { 
+                    onClick={() => trackButtonClick('article_card_click', {
                       article_id: page.id,
                       article_title: page.title[language],
                       card_position: 'additional'
@@ -172,10 +169,15 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
                       <Star className="h-8 w-8 text-amber-600 group-hover:scale-110 transition-transform duration-200" />
                     </div>
                     <h3 className={`text-xl font-semibold text-gray-800 mb-3 ${getFontClass()}`}>
-                      {page.title[language]}
+                      {/* {language === 'tamil' ? page.title_tamil : page.title_english}
+                       */}
+                       {page.title[language]}
                     </h3>
                     <p className={`text-gray-600 text-sm line-clamp-3 ${getFontClass()}`}>
-                      {getPreviewText(page.content, language)}...
+                      {/* {getPreviewText(language === 'tamil' ? page.content_tamil : page.content_english)}...
+                       */}
+
+                    {getPreviewText( page?.content[language] || [])}...
                     </p>
                   </Link>
                 ))}
@@ -189,3 +191,4 @@ const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
 };
 
 export default HomePage;
+

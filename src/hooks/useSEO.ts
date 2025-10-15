@@ -1,10 +1,16 @@
 import { useEffect } from 'react';
-import { Page, DynamicPage, Language } from '../types';
+import { Language } from '../types';
 
 interface SEOMetaProps {
   title?: string;
   description?: string;
-  page?: Page | DynamicPage;
+  page?: {
+    title: {
+      tamil: string;
+      english: string;
+    };
+    content: any;
+  };
   language: Language;
 }
 

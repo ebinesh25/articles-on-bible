@@ -21,7 +21,26 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
   const { trackButtonClick, trackArticleView } = useGoogleAnalytics();
   
   // Use API article if available, otherwise fallback to static data
-  const page = article || data.pages.find(p => p.id === id);
+  // Guard against missing static pages data to avoid runtime errors
+  const page = article ;
+  // const page = {
+  //   title: {
+  //     english: article?.title_english || 'Article',
+  //     tamil: article?.title_tamil || 'கட்டுரை'
+  //   },
+  //   content: {
+  //     english: article?.content_english || [],
+  //     tamil: article?.content_tamil || []
+  //   },
+  //   id: article?.id || id,
+  //   theme: article?.theme || 'gray',
+  //   author: {
+  //     english: 'Jessey',
+  //     tamil: 'Jessey'
+  //   }
+  // }
+
+  console.log('Rendering article page with id:', id, 'language:', language, 'page:', page);
   
   // Helper function for font styling - defined early to avoid hoisting issues
   const getFontClass = () => language === 'tamil' ? 'font-catamaran' : 'font-inter';
@@ -147,7 +166,7 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
               })}
             >
               <Book className="h-6 w-6" />
-              <span className={`text-lg font-semibold ${getFontClass()}`}>{data.author[language]}</span>
+              <span className={`text-lg font-semibold ${getFontClass()}`}> {data?.author?.[language] ?? ""}</span>
             </Link>
             <button
               onClick={() => {
