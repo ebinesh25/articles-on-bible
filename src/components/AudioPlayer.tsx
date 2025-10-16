@@ -87,7 +87,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, accentColor = 'amber-700
         type="range"
         min="0"
         max="100"
-        value="29"
+        value={progress * 100}
+        onChange={handleSeek}
         className={`w-full accent-${accentColor} bg-transparent`}
       />
 
