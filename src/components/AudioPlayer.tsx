@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Download } from 'lucide-react';
+import useEasyTracking from '../utils/trackingUtils';
 
 interface AudioPlayerProps {
   src: string;
@@ -9,6 +10,10 @@ interface AudioPlayerProps {
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, accentColor = 'amber-700' }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
+  // Easy analytics tracking for media and downloads
+  // Derive a simple media name from the src (e.g., filename)
+  const mediaName = src.split('/').pop() || src;
+  const { trackMedia, trackDownload } = useEasyTracking();
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(0.85);
@@ -50,15 +55,22 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, accentColor = 'amber-700
   }, [isPlaying]);
 
   const togglePlay = () => {
-    setIsPlaying(prev => !prev);
+    // Track play/pause actions
+    const action = isPlaying ? 'pause' : 'play';
+    trackMedia(mediaName, action);
+    setIsPlaying(!isPlaying);
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     const audio = audioRef.current;
     if (!audio || audio.duration === 0) return;
+    // Seek to new time and update progress
     audio.currentTime = (value / 100) * audio.duration;
-    setProgress(value / 100);
+    const pct = value / 100;
+    setProgress(pct);
+    // Track seek interaction
+    trackMedia(mediaName, 'seeked');
   };
 
   const handleRateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -106,6 +118,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, accentColor = 'amber-700
       </div>
       <a
         href={`${src}?download=`}
+        // Track file download event
+        onClick={() => trackDownload(mediaName)}
         className="p-4 flex items-center justify-center rounded-full bg-white/30 border border-white/30 backdrop-blur-md hover:bg-white/40 shadow-lg"
       >
         <Download className={`h-6 w-6 text-${accentColor}`} />
