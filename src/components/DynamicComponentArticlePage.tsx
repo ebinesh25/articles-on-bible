@@ -130,6 +130,11 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
     }
   };
 
+  // derive single accent color suffix (e.g. 'amber-700') for audio controls from theme
+  const accentColor = getAccentColor(page.theme)
+    .split(' ')[0]
+    .replace(/^text-/, '');
+
   // Extract entries for the selected language
   const entries: ContentEntry[] = page.content[language];
   // Determine audio source URL for current language
@@ -234,7 +239,7 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
       </div>
       </div>
       {/* Audio player fixed at bottom right */}
-      {audioSrc && <AudioPlayer src={audioSrc} />}
+      {audioSrc && <AudioPlayer src={audioSrc} accentColor={accentColor} />}
     </>
   );
 };
