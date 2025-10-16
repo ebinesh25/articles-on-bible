@@ -137,8 +137,6 @@ const CreateArticlePage: React.FC<CreateArticlePageProps> = ({ language, setLang
         throw new Error('API URL not configured');
       }
 
-      console.log('Creating article with data:', article);
-
       const response = await fetch(`${apiUrl}/articles/`, {
         method: 'POST',
         headers: {

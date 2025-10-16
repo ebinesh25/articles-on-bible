@@ -154,8 +154,6 @@ const EditArticlePage: React.FC<EditArticlePageProps> = ({ language, setLanguage
         throw new Error('API URL not configured');
       }
 
-      console.log('Updating article with data:', article);
-
       const response = await fetch(`${apiUrl}/articles/${articleId}`, {
         method: 'PUT',
         headers: {

@@ -12,7 +12,6 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ language, setLanguage }) => {
-  console.log('Rendering HomePage component');
   const { articles, loading, error } = useArticles();
   const { trackButtonClick } = useGoogleAnalytics();
   
