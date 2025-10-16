@@ -45,14 +45,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
   };
 
   // Circle progress calculations
-  const radius = 28;
+  const radius = 32;
   const strokeWidth = 4;
   const normalizedRadius = radius - strokeWidth / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDashoffset = circumference - progress * circumference;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 right-[5%] z-50">
       <button
         onClick={togglePlay}
         className="relative w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center focus:outline-none"
@@ -63,14 +63,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src }) => {
           height={radius * 2}
           viewBox={`0 0 ${radius * 2} ${radius * 2}`}
         >
-          <circle
-            cx={radius}
-            cy={radius}
-            r={normalizedRadius}
-            stroke="#e5e7eb"
-            strokeWidth={strokeWidth}
-            fill="none"
-          />
           <circle
             cx={radius}
             cy={radius}
