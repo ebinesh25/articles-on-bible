@@ -12,7 +12,6 @@ export function useArticles() {
       try {
         setLoading(true);
         const data = await supabaseClient.getArticles();
-        console.log('Fetched articles:', data);
         setArticles(data);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('An unknown error occurred'));

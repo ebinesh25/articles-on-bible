@@ -6,6 +6,7 @@ import { Language, DynamicContentData, ContentEntry } from '../types';
 import { useDocumentTitle } from '../hooks/useSEO';
 import { getUrlWithLanguage } from '../utils/urlUtils';
 import MarkdownRenderer from './MarkdownRenderer';
+import AudioPlayer from './AudioPlayer';
 import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics';
 import { useArticle } from '../hooks/useArticle';
 
@@ -20,27 +21,8 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
   const { article, loading, error } = useArticle(id);
   const { trackButtonClick, trackArticleView } = useGoogleAnalytics();
   
-  // Use API article if available, otherwise fallback to static data
-  // Guard against missing static pages data to avoid runtime errors
-  const page = article ;
-  // const page = {
-  //   title: {
-  //     english: article?.title_english || 'Article',
-  //     tamil: article?.title_tamil || 'கட்டுரை'
-  //   },
-  //   content: {
-  //     english: article?.content_english || [],
-  //     tamil: article?.content_tamil || []
-  //   },
-  //   id: article?.id || id,
-  //   theme: article?.theme || 'gray',
-  //   author: {
-  //     english: 'Jessey',
-  //     tamil: 'Jessey'
-  //   }
-  // }
 
-  console.log('Rendering article page with id:', id, 'language:', language, 'page:', page);
+  const page = article ;
   
   // Helper function for font styling - defined early to avoid hoisting issues
   const getFontClass = () => language === 'tamil' ? 'font-catamaran' : 'font-inter';
@@ -150,10 +132,13 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
 
   // Extract entries for the selected language
   const entries: ContentEntry[] = page.content[language];
+  // Determine audio source URL for current language
+  const audioSrc: string = page.audio?.[language] || '';
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${getThemeColors(page.theme)}`}>
-      {/* Navigation */}
+    <>
+      <div className={`min-h-screen bg-gradient-to-br ${getThemeColors(page.theme)}`}>  
+        {/* Navigation */}
       <nav className="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -232,7 +217,7 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
                       <MarkdownRenderer
                         key={idx}
                         text={entry.value}
-                        className={`text-gray-700 leading-relaxed mb-8 text-justify ${getFontClass()}`}
+                        className={`text-gray-700 leading-relaxed mb-8 text-left leading-loose [text-justify:inter-word] ${getFontClass()}`}
                       />
                     );
                 }
@@ -247,7 +232,10 @@ const DynamicComponentArticlePage: React.FC<DynamicComponentArticlePageProps> = 
           </div>
         </div>
       </div>
-    </div>
+      </div>
+      {/* Audio player fixed at bottom right */}
+      {audioSrc && <AudioPlayer src={audioSrc} />}
+    </>
   );
 };
 
